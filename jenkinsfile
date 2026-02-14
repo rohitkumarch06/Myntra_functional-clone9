@@ -17,8 +17,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mkdir -p output'
-                sh 'echo "Build successful" > output/result.txt'
+                bat 'mkdir output'
+                bat 'echo Build successful > output\\result.txt'
             }
         }
 
