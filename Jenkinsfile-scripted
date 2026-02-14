@@ -6,12 +6,15 @@ node {
     }
 
     stage('Build') {
-        sh 'mkdir -p output'
-        sh 'echo "Build from Scripted pipeline" > output/result2.txt'
+        bat '''
+        if exist output rmdir /s /q output
+        mkdir output
+        echo Build from Scripted pipeline > output\\result2.txt
+        '''
     }
 
     stage('Echo Build Status') {
-        echo "Scripted pipeline completed"
+        echo "Scripted pipeline build completed successfully"
     }
 
     stage('Archive Artifacts') {
