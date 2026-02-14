@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     triggers {
-        cron('H/5 * * * *')
-        pollSCM('H/2 * * * *')
+        cron('H/5 * * * *')        // Build periodically every 5 minutes
+        pollSCM('H/2 * * * *')     // Poll repository every 2 minutes
     }
 
     stages {
@@ -11,14 +11,17 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 checkout scm
-                echo "Repository cloned"
+                echo "Repository cloned successfully"
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mkdir output'
-                bat 'echo Build successful > output\\result.txt'
+                bat '''
+                if exist output rmdir /s /q output
+                mkdir output
+                echo Build successful > output\\result.txt
+                '''
             }
         }
 
