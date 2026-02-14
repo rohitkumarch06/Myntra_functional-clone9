@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    triggers {
+        cron('H/5 * * * *')
+        pollSCM('H/2 * * * *')
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                checkout scm
+                echo "Repository cloned"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mkdir -p output'
+                sh 'echo "Build successful" > output/result.txt'
+            }
+        }
+
+        stage('Echo Build Status') {
+            steps {
+                echo "Build completed successfully"
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'output/*.txt', fingerprint: true
+            }
+        }
+    }
+}
