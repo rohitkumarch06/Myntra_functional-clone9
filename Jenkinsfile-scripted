@@ -1,0 +1,20 @@
+node {
+
+    stage('Clone Repository') {
+        checkout scm
+        echo "Repository cloned"
+    }
+
+    stage('Build') {
+        sh 'mkdir -p output'
+        sh 'echo "Build from Scripted pipeline" > output/result2.txt'
+    }
+
+    stage('Echo Build Status') {
+        echo "Scripted pipeline completed"
+    }
+
+    stage('Archive Artifacts') {
+        archiveArtifacts artifacts: 'output/*.txt', fingerprint: true
+    }
+}
